@@ -557,15 +557,17 @@ Weighting          : term frequency (tf)</code></pre>
 </section>
 <section id="visualise-these-top-terms" class="slide level2" data-background-image="background.png">
 <h2>Visualise these top terms</h2>
-<div class="cell columns column-output-location">
-<div class="column">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">%&gt;%</span></span>
 <span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
 <span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
 <span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb32-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb32-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column fragment">
+</div>
+
+</section>
+<section id="visualise-these-top-terms-output" class="slide level2 output-location-slide"><h2>Visualise these top terms</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
 <div>
 <figure>
@@ -573,10 +575,7 @@ Weighting          : term frequency (tf)</code></pre>
 </figure>
 </div>
 </div>
-</div>
-</div>
-</section>
-<section id="section-4" class="slide level2" data-background-image="background.png">
+</div></section><section id="section-4" class="slide level2" data-background-image="background.png">
 <h2></h2>
 <p>Examining the <strong><em>per-document-per-topic probabilities</em></strong> to predict which topics are associated with each document.</p>
 <div class="cell">
