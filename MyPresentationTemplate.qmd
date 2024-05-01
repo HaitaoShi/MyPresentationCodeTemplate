@@ -164,9 +164,8 @@ top_terms
 ## Visualise these top terms {background-image=background.png}
 
 ```{r}
-#| fig-height: 11
 #| echo: true
-#| output-location: column-fragment
+#| output-location: slide #While column-fragment appears in the same slide, slide will create a new slide.
 #| code-line-numbers: False
 
 top_terms %>%
