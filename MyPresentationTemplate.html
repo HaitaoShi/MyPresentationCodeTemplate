@@ -404,25 +404,26 @@ Haitao Shi
 
   <p class="date">2024-04-30</p>
 </section>
+
 <section id="section" class="slide level2" data-background-image="background.png">
 <h2></h2>
 <div class="r-fit-text">
 <p>Load Packages</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
-<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(topicmodels)</span>
-<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb21-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb21-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb21-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb21-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb21-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb21-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb21-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(topicmodels)</span>
+<span id="cb21-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Load Data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>data  <span class="ot">&lt;-</span>  <span class="fu">read_csv</span>(<span class="st">"complete.csv"</span>)</span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="" aria-hidden="true" tabindex="-1"></a>data  <span class="ot">&lt;-</span>  <span class="fu">read_csv</span>(<span class="st">"complete.csv"</span>)</span>
+<span id="cb22-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "File_Name"    "Title"        "DrugName"     "BrandName"    "Drug_Type"   
  [6] "Rating"       "Reviews"      "Sales"        "Ship_From"    "Ship_To"     
@@ -436,39 +437,39 @@ Haitao Shi
 <h2>Steps to get data ready for analysis</h2>
 <div class="r-fit-text">
 <div class="cell">
-<div class="sourceCode cell-code" id="annotated-cell-11" data-code-line-numbers="1-2|3-4|5|6-10|11-12"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-11-1"><a href="#annotated-cell-11-1"></a>word_only <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-11-2" class="code-annotation-target"><a href="#annotated-cell-11-2"></a>  <span class="fu">select</span>(<span class="st">"Drug_Type_L"</span>, <span class="st">"MainContent"</span>) <span class="sc">%&gt;%</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-11-3" class="code-annotation-target"><a href="#annotated-cell-11-3"></a>  <span class="fu">group_by</span>(Drug_Type_L) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-4"><a href="#annotated-cell-11-4"></a>  <span class="fu">summarise</span>(<span class="at">Type_Content=</span><span class="fu">paste</span>(MainContent,<span class="at">collapse =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-11-5" class="code-annotation-target"><a href="#annotated-cell-11-5"></a>  <span class="fu">slice</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">11</span>)) <span class="sc">%&gt;%</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="4" onclick="event.preventDefault();" href="">4</a><span id="annotated-cell-11-6" class="code-annotation-target"><a href="#annotated-cell-11-6"></a>  <span class="fu">unnest_tokens</span>(word, Type_Content) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-7"><a href="#annotated-cell-11-7"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_remove_all</span>(word, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-8"><a href="#annotated-cell-11-8"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_remove_all</span>(word, <span class="st">"mg|g|ml|l"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-9"><a href="#annotated-cell-11-9"></a>  <span class="fu">filter</span>(word <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-10"><a href="#annotated-cell-11-10"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">"word"</span>)  <span class="sc">%&gt;%</span></span>
-<a class="code-annotation-anchor" data-target-cell="annotated-cell-11" data-target-annotation="5" onclick="event.preventDefault();" href="">5</a><span id="annotated-cell-11-11" class="code-annotation-target"><a href="#annotated-cell-11-11"></a>  <span class="fu">count</span>(Drug_Type_L, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="annotated-cell-11-12"><a href="#annotated-cell-11-12"></a>  <span class="fu">ungroup</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="annotated-cell-31" data-code-line-numbers="1-2|3-4|5|6-10|11-12"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="annotated-cell-31-1"><a href="#annotated-cell-31-1"></a>word_only <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="annotated-cell-31-2" class="code-annotation-target"><a href="#annotated-cell-31-2"></a>  <span class="fu">select</span>(<span class="st">"Drug_Type_L"</span>, <span class="st">"MainContent"</span>) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="annotated-cell-31-3" class="code-annotation-target"><a href="#annotated-cell-31-3"></a>  <span class="fu">group_by</span>(Drug_Type_L) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-4"><a href="#annotated-cell-31-4"></a>  <span class="fu">summarise</span>(<span class="at">Type_Content=</span><span class="fu">paste</span>(MainContent,<span class="at">collapse =</span> <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="3" onclick="event.preventDefault();" href="">3</a><span id="annotated-cell-31-5" class="code-annotation-target"><a href="#annotated-cell-31-5"></a>  <span class="fu">slice</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">11</span>)) <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="4" onclick="event.preventDefault();" href="">4</a><span id="annotated-cell-31-6" class="code-annotation-target"><a href="#annotated-cell-31-6"></a>  <span class="fu">unnest_tokens</span>(word, Type_Content) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-7"><a href="#annotated-cell-31-7"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_remove_all</span>(word, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-8"><a href="#annotated-cell-31-8"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_remove_all</span>(word, <span class="st">"mg|g|ml|l"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-9"><a href="#annotated-cell-31-9"></a>  <span class="fu">filter</span>(word <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-10"><a href="#annotated-cell-31-10"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">"word"</span>)  <span class="sc">%&gt;%</span></span>
+<a class="code-annotation-anchor" data-target-cell="annotated-cell-31" data-target-annotation="5" onclick="event.preventDefault();" href="">5</a><span id="annotated-cell-31-11" class="code-annotation-target"><a href="#annotated-cell-31-11"></a>  <span class="fu">count</span>(Drug_Type_L, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="annotated-cell-31-12"><a href="#annotated-cell-31-12"></a>  <span class="fu">ungroup</span>()</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
-<dt data-target-cell="annotated-cell-11" data-target-annotation="1">1</dt>
+<dt data-target-cell="annotated-cell-31" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="2" data-code-annotation="1">Select the columns “Drug_Type_L” and “MainContent” from the data frame “data”</span>
+<span data-code-cell="annotated-cell-31" data-code-lines="2" data-code-annotation="1">Select the columns “Drug_Type_L” and “MainContent” from the data frame “data”</span>
 </dd>
-<dt data-target-cell="annotated-cell-11" data-target-annotation="2">2</dt>
+<dt data-target-cell="annotated-cell-31" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="3,4" data-code-annotation="2">Group the data by “Drug_Type_L” and concatenate the “MainContent” strings for each group into a single string</span>
+<span data-code-cell="annotated-cell-31" data-code-lines="3,4" data-code-annotation="2">Group the data by “Drug_Type_L” and concatenate the “MainContent” strings for each group into a single string</span>
 </dd>
-<dt data-target-cell="annotated-cell-11" data-target-annotation="3">3</dt>
+<dt data-target-cell="annotated-cell-31" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="5" data-code-annotation="3">Remove the 6th and 11th rows from the resulting data frame (NA and Other)</span>
+<span data-code-cell="annotated-cell-31" data-code-lines="5" data-code-annotation="3">Remove the 6th and 11th rows from the resulting data frame (NA and Other)</span>
 </dd>
-<dt data-target-cell="annotated-cell-11" data-target-annotation="4">4</dt>
+<dt data-target-cell="annotated-cell-31" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="6,7,8,9,10" data-code-annotation="4">Split the concatenated strings into individual words and remove all digits, units (mg, g, ml, l), empty value and stop words.</span>
+<span data-code-cell="annotated-cell-31" data-code-lines="6,7,8,9,10" data-code-annotation="4">Split the concatenated strings into individual words and remove all digits, units (mg, g, ml, l), empty value and stop words.</span>
 </dd>
-<dt data-target-cell="annotated-cell-11" data-target-annotation="5">5</dt>
+<dt data-target-cell="annotated-cell-31" data-target-annotation="5">5</dt>
 <dd>
-<span data-code-cell="annotated-cell-11" data-code-lines="11" data-code-annotation="5">Count the frequency of each word for each group, and sort the results in descending order</span>
+<span data-code-cell="annotated-cell-31" data-code-lines="11" data-code-annotation="5">Count the frequency of each word for each group, and sort the results in descending order</span>
 </dd>
 </dl>
 </div>
@@ -479,9 +480,9 @@ Haitao Shi
 <h2></h2>
 <p>Cast a one-token-per-row table into a DocumentTermMatrix with tidytext’s cast_dtm()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>Drug_dtm <span class="ot">&lt;-</span> word_only <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href=""></a>  <span class="fu">cast_dtm</span>(Drug_Type_L, word, n)</span>
-<span id="cb4-3"><a href=""></a>Drug_dtm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>Drug_dtm <span class="ot">&lt;-</span> word_only <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href=""></a>  <span class="fu">cast_dtm</span>(Drug_Type_L, word, n)</span>
+<span id="cb24-3"><a href=""></a>Drug_dtm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;&lt;DocumentTermMatrix (documents: 9, terms: 6048)&gt;&gt;
 Non-/sparse entries: 10783/43649
@@ -492,8 +493,8 @@ Weighting          : term frequency (tf)</code></pre>
 </div>
 <p>As we have already know that we have 9 types of drugs here. So, I set k equals to 9. If we don’t know, then we may set k to different values to test.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>Drug_lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(Drug_dtm, <span class="at">k =</span> <span class="dv">9</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">100</span>))</span>
-<span id="cb6-2"><a href=""></a>Drug_lda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>Drug_lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(Drug_dtm, <span class="at">k =</span> <span class="dv">9</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">100</span>))</span>
+<span id="cb26-2"><a href=""></a>Drug_lda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A LDA_VEM topic model with 9 topics.</code></pre>
 </div>
@@ -503,8 +504,8 @@ Weighting          : term frequency (tf)</code></pre>
 <h2></h2>
 <p>Examine <strong><em>per-topic-per-word probabilities</em></strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>Predict_topics <span class="ot">&lt;-</span> <span class="fu">tidy</span>(Drug_lda, <span class="at">matrix =</span> <span class="st">"beta"</span>)</span>
-<span id="cb8-2"><a href=""></a>Predict_topics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>Predict_topics <span class="ot">&lt;-</span> <span class="fu">tidy</span>(Drug_lda, <span class="at">matrix =</span> <span class="st">"beta"</span>)</span>
+<span id="cb28-2"><a href=""></a>Predict_topics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 54,432 × 3
    topic term          beta
@@ -528,12 +529,12 @@ Weighting          : term frequency (tf)</code></pre>
 <p>Find the top 10 terms within each topic.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="ot">&lt;-</span> Predict_topics <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(beta, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(topic, <span class="sc">-</span>beta)</span>
-<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="ot">&lt;-</span> Predict_topics <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span></span>
+<span id="cb30-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(beta, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb30-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(topic, <span class="sc">-</span>beta)</span>
+<span id="cb30-6"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 90 × 3
@@ -558,17 +559,17 @@ Weighting          : term frequency (tf)</code></pre>
 <h2>Visualise these top terms</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">%&gt;%</span></span>
+<span id="cb32-2"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
+<span id="cb32-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb32-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb32-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="MyPresentationTemplate_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+<p><img data-src="MyPresentationTemplate_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -579,8 +580,8 @@ Weighting          : term frequency (tf)</code></pre>
 <h2></h2>
 <p>Examining the <strong><em>per-document-per-topic probabilities</em></strong> to predict which topics are associated with each document.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>Drug_gamma <span class="ot">&lt;-</span> <span class="fu">tidy</span>(Drug_lda, <span class="at">matrix =</span> <span class="st">"gamma"</span>)</span>
-<span id="cb13-2"><a href=""></a>Drug_gamma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>Drug_gamma <span class="ot">&lt;-</span> <span class="fu">tidy</span>(Drug_lda, <span class="at">matrix =</span> <span class="st">"gamma"</span>)</span>
+<span id="cb33-2"><a href=""></a>Drug_gamma</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 81 × 3
    document                topic      gamma
@@ -599,7 +600,7 @@ Weighting          : term frequency (tf)</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>Drug_gamma <span class="ot">&lt;-</span> Drug_gamma <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(gamma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>Drug_gamma <span class="ot">&lt;-</span> Drug_gamma <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span> <span class="fu">slice_max</span>(gamma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="section-5" class="slide level2" data-background-image="background.png">
@@ -608,25 +609,25 @@ Weighting          : term frequency (tf)</code></pre>
 <p>Due to the limited sample size, three topics have been categorized as “Cannabis”. It is possible that Ecstasy and Opioids may not exhibit statistically significant differences. Nevertheless, we can include the predicted drug types in the plot.</p>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># define the plot_labels vector</span></span>
-<span id="cb16-2"><a href="" aria-hidden="true" tabindex="-1"></a>plot_labels <span class="ot">&lt;-</span> Drug_gamma<span class="sc">$</span>document </span>
-<span id="cb16-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># modify the top_terms data frame to include plot labels</span></span>
-<span id="cb16-5"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="ot">&lt;-</span> top_terms <span class="sc">%&gt;%</span></span>
-<span id="cb16-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot_label =</span> plot_labels[topic])</span>
-<span id="cb16-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data with the new plot labels</span></span>
-<span id="cb16-9"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">%&gt;%</span></span>
-<span id="cb16-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
-<span id="cb16-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
-<span id="cb16-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb16-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> plot_label, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb16-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># define the plot_labels vector</span></span>
+<span id="cb36-2"><a href="" aria-hidden="true" tabindex="-1"></a>plot_labels <span class="ot">&lt;-</span> Drug_gamma<span class="sc">$</span>document </span>
+<span id="cb36-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># modify the top_terms data frame to include plot labels</span></span>
+<span id="cb36-5"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="ot">&lt;-</span> top_terms <span class="sc">%&gt;%</span></span>
+<span id="cb36-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">plot_label =</span> plot_labels[topic])</span>
+<span id="cb36-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the data with the new plot labels</span></span>
+<span id="cb36-9"><a href="" aria-hidden="true" tabindex="-1"></a>top_terms <span class="sc">%&gt;%</span></span>
+<span id="cb36-10"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
+<span id="cb36-11"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
+<span id="cb36-12"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb36-13"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> plot_label, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb36-14"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column fragment">
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="MyPresentationTemplate_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="MyPresentationTemplate_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </figure>
 </div>
 </div>

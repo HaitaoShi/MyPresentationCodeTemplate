@@ -16,10 +16,14 @@ format:
       data-background-image: Designer.png
 ---
 
-## {background-image=background.png}
-::: {.r-fit-text}
-
+## install_packages {visibility="hidden"}
 ```{r}
+#| label: install_packages
+#| message: true
+#| warning: false
+#| code-fold: False
+#| echo: true
+#| code-line-numbers: False
 install.packages("quarto")
 install.packages("tidyverse")
 install.packages("forcats")
@@ -30,12 +34,11 @@ install.packages("ggraph")
 install.packages("ggrepel")
 install.packages("topicmodels")
 install.packages("reshape2")
-
 ```
 
-```{r}
-```
 
+## {background-image=background.png}
+::: {.r-fit-text}
 
 
 Load Packages
