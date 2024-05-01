@@ -19,6 +19,25 @@ format:
 ## {background-image=background.png}
 ::: {.r-fit-text}
 
+```{r}
+install.packages("quarto")
+install.packages("tidyverse")
+install.packages("forcats")
+install.packages("stringr")
+install.packages("tidytext")
+install.packages("igraph")
+install.packages("ggraph")
+install.packages("ggrepel")
+install.packages("topicmodels")
+install.packages("reshape2")
+
+```
+
+```{r}
+```
+
+
+
 Load Packages
 
 ```{r}
